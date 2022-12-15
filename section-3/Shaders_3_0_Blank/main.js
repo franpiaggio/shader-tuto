@@ -1,9 +1,7 @@
-import * as THREE from 'https://cdn.skypack.dev/three@0.136';
-
+import * as THREE from "https://cdn.skypack.dev/three@0.136";
 
 class SimonDevGLSLCourse {
-  constructor() {
-  }
+  constructor() {}
 
   async initialize() {
     this.threejs_ = new THREE.WebGLRenderer({
@@ -16,9 +14,13 @@ class SimonDevGLSLCourse {
 
     document.body.appendChild(this.threejs_.domElement);
 
-    window.addEventListener('resize', () => {
-      this.onWindowResize_();
-    }, false);
+    window.addEventListener(
+      "resize",
+      () => {
+        this.onWindowResize_();
+      },
+      false
+    );
 
     this.camera_ = new THREE.OrthographicCamera(0, 1, 1, 0, 0.1, 1000);
     this.camera_.position.set(0, 0, 1);
@@ -26,27 +28,27 @@ class SimonDevGLSLCourse {
     this.scene_ = new THREE.Scene();
 
     await this.setupProject_();
-    
+
     this.raf_();
   }
 
   async setupProject_() {
-    const vsh = await fetch('./shaders/vertex-shader.glsl');
-    const fsh = await fetch('./shaders/fragment-shader.glsl');
+    const vsh = await fetch("./shaders/vertex-shader.glsl");
+    const fsh = await fetch("./shaders/fragment-shader.glsl");
 
     const loader = new THREE.TextureLoader();
-    const dogTexture = loader.load('./textures/dog.jpg');
+    const dogTexture = loader.load("./textures/dog.jpg");
     dogTexture.wrapS = THREE.RepeatWrapping;
     dogTexture.wrapT = THREE.RepeatWrapping;
     dogTexture.magFilter = THREE.NearestFilter;
-    const overlayTexture = loader.load('./textures/overlay.png');
+    const overlayTexture = loader.load("./textures/overlay.png");
 
     const geometry = new THREE.PlaneGeometry(1, 1);
     const material = new THREE.ShaderMaterial({
       uniforms: {
-        diffuse: {value: dogTexture},
-        overlay: {value: overlayTexture},
-        tint: {value: new THREE.Vector4(1, 0, 0, 1)},
+        diffuse: { value: dogTexture },
+        overlay: { value: overlayTexture },
+        tint: { value: new THREE.Vector4(1, 0, 1, 1) },
       },
       vertexShader: await vsh.text(),
       fragmentShader: await fsh.text(),
@@ -54,7 +56,7 @@ class SimonDevGLSLCourse {
 
     const plane = new THREE.Mesh(geometry, material);
     plane.position.set(0.5, 0.5, 0);
-    this.scene_.add( plane );
+    this.scene_.add(plane);
   }
 
   onWindowResize_() {
@@ -69,10 +71,9 @@ class SimonDevGLSLCourse {
   }
 }
 
-
 let APP_ = null;
 
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener("DOMContentLoaded", async () => {
   APP_ = new SimonDevGLSLCourse();
   await APP_.initialize();
 });

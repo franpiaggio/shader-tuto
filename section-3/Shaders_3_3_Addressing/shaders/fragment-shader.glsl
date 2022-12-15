@@ -7,7 +7,7 @@ uniform vec4 tint;
 
 
 void main(void) {
-  vec2 uvs = vUvs * vec2(3.0, 2.0);
+  vec2 uvs = vUvs * 3.;
 
   vec4 diffuseSample = texture2D(diffuse, uvs);
 
